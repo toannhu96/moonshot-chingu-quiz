@@ -138,6 +138,43 @@ export const AnswerTileContainerStyled = styled.div<{
     margin: 0;
   }
 `;
+
+export const TrueAnswerTileContainerStyled = styled.div<{
+  animationDelay?: string;
+  selected?: boolean;
+}>`
+  position: relative;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-around;
+  align-items: start;
+  max-width: 375px;
+  width: 100%;
+  min-height: 90px;
+  padding: 8px 12px;
+  margin: 10px auto;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px ${props => props.theme.colors.lightGrey};
+  transition-duration: 350ms;
+  animation: ${riseUp} 400ms ease-in-out;
+  animation-fill-mode: forwards;
+  animation-delay: ${props => props.animationDelay};
+  background-color: ${props =>
+    props.selected ? "rgb(249,76,101)" : "white"};
+  color: "black";
+
+  &:hover {
+    box-shadow: 10px 3px 18px ${props => props.theme.colors.lightGrey};
+    cursor: pointer;
+  }
+
+  @media (min-width: ${breakpoint("md")}) {
+    max-width: 406px;
+    width: 100%;
+    margin: 0;
+  }
+`;
+
 export const AnswerTileMarkStyled = styled.div`
   position: absolute;
   display: flex;
@@ -167,20 +204,20 @@ export const AnswerTileTextStyled = styled.div`
 
 export const NextQuestionBtnContainer = styled.div`
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
 `;
 
 export const NextQuestionBtnStyled = styled(PrimaryButton)`
   width: 255px;
-  margin: 40px auto;
+  margin: 40px;
   border: ${props => props.theme.colors.darkGreen} 5px solid;
 `;
 
 export const DisabledNextQuestionBtnStyled = styled(PrimaryButton)`
   width: 255px;
-  margin: 40px auto;
+  margin: 40px;
   border: ${props => props.theme.colors.lightGrey} 5px solid;
   color: ${props => props.theme.colors.lightGrey};
   cursor: not-allowed;
@@ -188,20 +225,20 @@ export const DisabledNextQuestionBtnStyled = styled(PrimaryButton)`
 
 export const SubmitQuizBtnContainer = styled.div`
   display: flex;
-  flex-flow: column nowrap;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: center;
 `;
 
 export const SubmitQuizBtnStyled = styled(PrimaryButton)`
   width: 255px;
-  margin: 40px auto;
+  margin: 40px;
   border: ${props => props.theme.colors.darkGreen} 5px solid;
 `;
 
 export const DisabledSubmitQuizBtnStyled = styled(PrimaryButton)`
   width: 255px;
-  margin: 40px auto;
+  margin: 40px;
   border: ${props => props.theme.colors.lightGrey} 5px solid;
   color: ${props => props.theme.colors.lightGrey};
   cursor: not-allowed;

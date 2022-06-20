@@ -52,6 +52,8 @@ export default function ResultView({
                 <CodeBlock>{record.correctAnswer}</CodeBlock>
                 <TextBodySmallBold>Your Answer:</TextBodySmallBold>
                 <CodeBlock>{record.userAnswer}</CodeBlock>
+                <TextBodySmallBold>Explanation:</TextBodySmallBold>
+                <CodeBlock>{record.explanation}</CodeBlock>
               </div>
             </ResultTile>
           ))}
@@ -60,7 +62,7 @@ export default function ResultView({
         <ResultTitleContainer>
           <Link href="/quizzes">
             <SubmitQuizBtnStyled>
-              <Heading4>{"Try Another >"}</Heading4>
+              <Heading4>{"Try Another"}</Heading4>
             </SubmitQuizBtnStyled>
           </Link>
         </ResultTitleContainer>

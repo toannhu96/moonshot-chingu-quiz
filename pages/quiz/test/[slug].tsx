@@ -12,8 +12,9 @@ import {
 } from "~/components/quizSingle/styles";
 import PageHeader from "~/components/shared/PageHeader";
 import QuestionHeader from "~/components/quizSingle/QuestionHeader";
-import AnswerTileContainer from "~/components/quizSingle/AnswerTileContainer";
+import { AnswerTileContainer } from "~/components/quizSingle/AnswerTileContainer";
 import NextQuestionBtn from "~/components/quizSingle/NextQuestionBtn";
+import PreviousQuestionBtn from "~/components/quizSingle/PreviousQuestionBtn";
 import SubmitQuizBtn from "~/components/quizSingle/SubmitQuizBtn";
 import ResultView from "~/components/quizSingle/ResultView";
 import db from "~/db";
@@ -32,8 +33,6 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
   const [quizRecord, setQuizRecord] = useState<QuizRecord[]>([]);
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
-  const submittedPageHeaderText = "You did it!";
-
   const toggleSelectedAnswer = (answerId: string, questionIndex: number) => {
     setSelectedAnswers([answerId]);
   };
@@ -42,6 +41,10 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
     updateQuizRecord();
     setSelectedAnswers([]);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
+  };
+
+  const previousQuestion = () => {
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
   };
 
   const submitQuiz = () => {
@@ -63,6 +66,7 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
         correctAnswer,
         userAnswer,
         correct: correctAnswer === userAnswer,
+        explanation: quizQuestions[currentQuestionIndex].explanation,
       },
     ]);
   };
@@ -103,6 +107,18 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
             {currentQuestionIndex !== quizQuestions.length - 1 ? (
               <ContentWrapper>
                 <NextQuestionBtnContainer>
+                  {currentQuestionIndex >= 1 ? (
+                    <a
+                      tabIndex={0}
+                      role="link"
+                      onClick={previousQuestion}
+                      onKeyDown={previousQuestion}
+                    >
+                      <PreviousQuestionBtn />
+                    </a>
+                  ) : (
+                    <PreviousQuestionBtn disabled />
+                  )}
                   {selectedAnswers.length >= 1 ? (
                     <a
                       tabIndex={0}
@@ -120,6 +136,18 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
             ) : (
               <ContentWrapper>
                 <SubmitQuizBtnContainer>
+                  {currentQuestionIndex >= 1 ? (
+                    <a
+                      tabIndex={0}
+                      role="link"
+                      onClick={previousQuestion}
+                      onKeyDown={previousQuestion}
+                    >
+                      <PreviousQuestionBtn />
+                    </a>
+                  ) : (
+                    <PreviousQuestionBtn disabled />
+                  )}
                   {selectedAnswers.length >= 1 ? (
                     <a
                       tabIndex={0}
@@ -183,6 +211,7 @@ export async function getStaticProps({
     answers: answers.filter(
       (answer: Answer) => answer.question === question.id
     ),
+    explanation: question.explanation,
   }));
 
   return {

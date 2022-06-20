@@ -4,4 +4,5 @@ export interface Question {
   id: string;
   prompt: string;
   answers: Answer[];
+  explanation: string;
 }

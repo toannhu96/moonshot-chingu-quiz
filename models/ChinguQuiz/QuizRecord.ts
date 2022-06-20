@@ -3,4 +3,5 @@ export interface QuizRecord {
   userAnswer: string;
   question: string;
   correct: boolean;
+  explanation: string;
 }
