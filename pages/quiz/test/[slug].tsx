@@ -21,6 +21,7 @@ import db from "~/db";
 import { Question } from "~/models/ChinguQuiz/Question";
 import { QuizRecord } from "~/models/ChinguQuiz/QuizRecord";
 import { Answer } from "~/models/ChinguQuiz/Answer";
+import shuffle from "shuffle-array";
 
 interface QuizProps {
   quizTitle: string;
@@ -29,53 +30,67 @@ interface QuizProps {
 
 export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
-  const [quizRecord, setQuizRecord] = useState<QuizRecord[]>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]); // TODO: allow selecting multiple answers
+  const [quizRecord, setQuizRecord] = useState<Map<number, QuizRecord>>(
+    new Map<number, QuizRecord>()
+  );
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
   const toggleSelectedAnswer = (answerId: string, questionIndex: number) => {
     setSelectedAnswers([answerId]);
+    updateQuizRecord(answerId);
   };
 
   const nextQuestion = () => {
-    updateQuizRecord();
-    setSelectedAnswers([]);
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    getQuestionByIndex(currentQuestionIndex + 1);
   };
 
   const previousQuestion = () => {
-    setCurrentQuestionIndex(currentQuestionIndex - 1);
+    getQuestionByIndex(currentQuestionIndex - 1);
   };
 
   const submitQuiz = () => {
-    updateQuizRecord();
     setQuizSubmitted(true);
   };
 
-  const updateQuizRecord = () => {
+  const getQuestionByIndex = (index: number) => {
+    let record = quizRecord.get(index);
+    if (record != null) {
+      setSelectedAnswers([record.userAnswerId]);
+    } else {
+      setSelectedAnswers([]);
+    }
+    setCurrentQuestionIndex(index);
+  };
+
+  const updateQuizRecord = (answer: string) => {
     const correctAnswer = quizQuestions[currentQuestionIndex].answers.filter(
       a => a.is_correct === true
     )[0].prompt;
     const userAnswer = quizQuestions[currentQuestionIndex].answers.filter(
-      a => a.id === selectedAnswers[0]
-    )[0].prompt;
-    setQuizRecord(current => [
-      ...current,
-      {
+      a => a.id === answer
+    )[0];
+
+    setQuizRecord(current =>
+      current.set(currentQuestionIndex, {
         question: quizQuestions[currentQuestionIndex].prompt,
-        correctAnswer,
-        userAnswer,
-        correct: correctAnswer === userAnswer,
+        correctAnswer: correctAnswer,
+        userAnswer: userAnswer.prompt,
+        userAnswerId: userAnswer.id,
+        correct: correctAnswer === userAnswer.prompt,
         explanation: quizQuestions[currentQuestionIndex].explanation,
-      },
-    ]);
+      })
+    );
   };
 
   return (
     <>
       <PageHeader>{quizSubmitted ? `Your Results` : quizTitle}</PageHeader>
       {quizSubmitted && (
-        <ResultView quizTitle={quizTitle} quizRecord={quizRecord} />
+        <ResultView
+          quizTitle={quizTitle}
+          quizRecord={Array.from(quizRecord.values())}
+        />
       )}
       {!quizSubmitted &&
         quizQuestions[currentQuestionIndex] &&
@@ -205,14 +220,16 @@ export async function getStaticProps({
     [slug]
   );
 
-  const quizQuestions = questions.map((question: Question) => ({
-    id: question.id,
-    prompt: question.prompt,
-    answers: answers.filter(
-      (answer: Answer) => answer.question === question.id
-    ),
-    explanation: question.explanation,
-  }));
+  const quizQuestions = shuffle(
+    questions.map((question: Question) => ({
+      id: question.id,
+      prompt: question.prompt,
+      answers: shuffle(
+        answers.filter((answer: Answer) => answer.question === question.id)
+      ),
+      explanation: question.explanation,
+    }))
+  );
 
   return {
     props: {

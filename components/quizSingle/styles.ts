@@ -293,7 +293,7 @@ export const ResultTile = styled.li<{
     ${props =>
       props.correct
         ? props.theme.colors.darkGreen
-        : props.theme.colors.lightGrey};
+        : props.theme.colors.lightRed};
   border-radius: 5px;
   box-shadow: 1px 1px 10px ${props => props.theme.colors.lightGrey};
   transition-duration: 400ms;
