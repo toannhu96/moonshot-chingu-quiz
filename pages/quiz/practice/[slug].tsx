@@ -11,13 +11,13 @@ import {
   ContentWrapper,
   SubmitQuizBtnStyled,
 } from "~/components/quizSingle/styles";
-import { Heading4 } from "~/components/shared/styles";
 import QuestionHeader from "~/components/quizSingle/QuestionHeader";
+import NextQuestionBtn from "~/components/quizSingle/NextQuestionBtn";
 import {
   AnswerTileContainer,
   TrueAnswerTileContainer,
 } from "~/components/quizSingle/AnswerTileContainer";
-import NextQuestionBtn from "~/components/quizSingle/NextQuestionBtn";
+import { Heading4 } from "~/components/shared/styles";
 import db from "~/db";
 import { Question } from "~/models/ChinguQuiz/Question";
 import { Answer } from "~/models/ChinguQuiz/Answer";
@@ -33,7 +33,7 @@ interface QuizProps {
 
 export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]); // TODO: allow selecting multiple answers
   const [quizSubmitted, setQuizSubmitted] = useState(false);
 
   const toggleSelectedAnswer = (answerId: string, questionIndex: number) => {
@@ -100,9 +100,7 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
                   {quizQuestions[currentQuestionIndex].explanation}
                 </Alert>
               </Container>
-            ) : (
-              <div></div>
-            )}
+            ) : null}
             {currentQuestionIndex !== quizQuestions.length - 1 ? (
               <ContentWrapper>
                 <NextQuestionBtnContainer>
@@ -138,9 +136,7 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
                         </Link>
                       </div>
                     </a>
-                  ) : (
-                    <></>
-                  )}
+                  ) : null}
                 </SubmitQuizBtnContainer>
               </ContentWrapper>
             )}
