@@ -5,6 +5,8 @@ import {
   QuestionProgressBar,
   QuestionProgressBarFiller,
   QuestionProgressBarText,
+  QuestionStepDotContainer,
+  QuestionStepDot,
 } from "./styles";
 import type { ChinguQuiz } from "../../models";
 
@@ -13,12 +15,14 @@ interface QuestionHeaderProps {
   questionIndex: number;
   questionCount: number;
   animationDelay: number;
+  getQuestionByIndex: Function;
 }
 export default function QuestionHeader({
   questionData,
-  questionIndex,
+  questionIndex, // question index start from 1 not 0
   questionCount,
   animationDelay,
+  getQuestionByIndex,
 }: QuestionHeaderProps) {
   return (
     <QuestionHeaderContainer animationDelay={animationDelay}>
@@ -32,6 +36,26 @@ export default function QuestionHeader({
           completion={(questionIndex / questionCount) * 100}
         />
       </QuestionProgressBar>
+      <QuestionStepDotContainer>
+        {[...Array(questionCount).keys()].map(i => {
+          let status = "inactive";
+          if (i + 1 < questionIndex) {
+            status = "finish";
+          } else if (i + 1 == questionIndex) {
+            status = "active";
+          }
+          return (
+            <QuestionStepDot
+              status={status}
+              onClick={e =>
+                getQuestionByIndex(parseInt(e.target.innerHTML) - 1)
+              }
+            >
+              {i + 1}
+            </QuestionStepDot>
+          );
+        })}
+      </QuestionStepDotContainer>
       <br />
       <Heading3>{questionData.prompt}</Heading3>
     </QuestionHeaderContainer>

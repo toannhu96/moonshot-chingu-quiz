@@ -10,6 +10,7 @@ import {
   AnswerTileContainerLink,
   ContentWrapper,
 } from "~/components/quizSingle/styles";
+import Countdown from "~/components/timer/Countdown";
 import PageHeader from "~/components/shared/PageHeader";
 import QuestionHeader from "~/components/quizSingle/QuestionHeader";
 import { AnswerTileContainer } from "~/components/quizSingle/AnswerTileContainer";
@@ -35,6 +36,8 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
     new Map<number, QuizRecord>()
   );
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const timeLimit = new Date();
+  timeLimit.setSeconds(timeLimit.getSeconds() + 3600);
 
   const toggleSelectedAnswer = (answerId: string, questionIndex: number) => {
     setSelectedAnswers([answerId]);
@@ -50,6 +53,14 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
   };
 
   const submitQuiz = () => {
+    if (quizQuestions.length != quizRecord.size) {
+      for (let i = 0; i < quizQuestions.length; i++) {
+        if (!quizRecord.has(i)) {
+          quizRecord.set(i, null);
+        }
+      }
+    }
+    setQuizRecord(quizRecord);
     setQuizSubmitted(true);
   };
 
@@ -86,12 +97,20 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
   return (
     <>
       <PageHeader>{quizSubmitted ? `Your Results` : quizTitle}</PageHeader>
-      {quizSubmitted && (
+      {quizSubmitted ? (
         <ResultView
           quizTitle={quizTitle}
           quizRecord={Array.from(quizRecord.values())}
         />
+      ) : (
+        <ContentWrapper>
+          <Countdown
+            expiryTimestamp={timeLimit}
+            callback={() => submitQuiz()}
+          />
+        </ContentWrapper>
       )}
+
       {!quizSubmitted &&
         quizQuestions[currentQuestionIndex] &&
         quizQuestions[currentQuestionIndex].answers && (
@@ -101,6 +120,7 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
               questionIndex={currentQuestionIndex + 1}
               questionCount={quizQuestions.length}
               animationDelay={30}
+              getQuestionByIndex={getQuestionByIndex}
             />
 
             <AnswersTileSection>
