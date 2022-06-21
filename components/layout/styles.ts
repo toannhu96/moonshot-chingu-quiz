@@ -35,13 +35,13 @@ export const LogoWrapper = styled.a`
 `;
 
 export const Logo = styled.img`
-  width: 47px;
-  height: 47px;
+  width: 150px;
+  height: 150px;
   margin-right: 20px;
 
   @media (min-width: ${breakpoint("md")}) {
-    width: 58px;
-    height: 58px;
+    width: 100px;
+    height: 100px;
     margin-right: 18px;
   }
 `;

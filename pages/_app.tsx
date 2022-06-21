@@ -18,6 +18,7 @@ const darkTheme = {
     lightGrey: "#ccc",
     midGreen: "#18e28c",
     darkGreen: "#057a55",
+    lightRed: "#f94c65",
     link: "blue",
     backgroundPrimary: "#333",
     backgroundMenu: "#333",
@@ -35,6 +36,7 @@ const lightTheme = {
     lightGrey: "#ccc",
     midGreen: "#18e28c",
     darkGreen: "#057a55",
+    lightRed: "#f94c65",
     link: "blue",
     backgroundPrimary: "#EBEFF3",
     backgroundMenu: "#fff",
@@ -45,7 +47,7 @@ const lightTheme = {
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const toggleTheme = () => setIsDarkTheme(!isDarkTheme);
 
   return (

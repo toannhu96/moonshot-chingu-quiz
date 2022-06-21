@@ -26,7 +26,7 @@ export const QuestionHeaderContainer = styled.section<{
 
   @media (min-width: ${breakpoint("md")}) {
     max-width: 850px;
-    margin: 40px auto;
+    margin: 10px auto;
   }
 `;
 
@@ -78,6 +78,40 @@ export const QuestionProgressBarText = styled.div`
     max-width: ${breakpoint("maxWidth")};
   }
 `;
+
+export const QuestionStepDotContainer = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`
+
+export const QuestionStepDot = styled.button<{
+  status?: string;
+}>`
+  height: 30px;
+  width: 30px;
+  margin: 0px 4px 10px;
+  background-color: ${props => props.status == 'finish' ? "#047A55" : "#bbbbbb"};
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  font-family: "Roboto", sans-serif;
+  font-size: 15px;
+  font-weight: bold;
+  text-align: center;
+  opacity: ${props => 
+    props.status == 'active' && 1 ||
+    props.status == 'finish' && 0.8 ||
+    0.4
+  };
+  color: ${props => 
+    props.status == 'active' && "white" ||
+    props.status == 'finish' && "white" ||
+    "black"
+  };
+`
 
 export const AnswersTileSection = styled.section`
   position: relative;
@@ -293,7 +327,7 @@ export const ResultTile = styled.li<{
     ${props =>
       props.correct
         ? props.theme.colors.darkGreen
-        : props.theme.colors.lightGrey};
+        : props.theme.colors.lightRed};
   border-radius: 5px;
   box-shadow: 1px 1px 10px ${props => props.theme.colors.lightGrey};
   transition-duration: 400ms;

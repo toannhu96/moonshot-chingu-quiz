@@ -31,7 +31,7 @@ const styles = {
     p: 4,
   },
   button: {
-    width: 400,
+    width: 500,
   },
 };
 

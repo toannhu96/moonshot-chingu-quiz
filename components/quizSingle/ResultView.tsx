@@ -11,6 +11,7 @@ import {
   SubmitQuizBtnStyled,
 } from "./styles";
 import ScoreGraph from "./ScoreGraph";
+import Alert from "@mui/material/Alert";
 
 export default function ResultView({
   quizTitle,
@@ -19,9 +20,12 @@ export default function ResultView({
   quizTitle: string;
   quizRecord: QuizRecord[];
 }) {
-  const percentage = Math.round(
-    (quizRecord.filter(r => r.correct).length * 100) / quizRecord.length
-  );
+  const answeredQuizRecord = quizRecord.filter(r => r != null);
+  const percentage =
+    Math.round(
+      (answeredQuizRecord.filter(r => r.correct).length * 100) /
+        quizRecord.length
+    ) || 0;
   const totalQs = quizRecord.length;
 
   return (
@@ -34,7 +38,13 @@ export default function ResultView({
         </ResultTitleContainer>
 
         <ResultTileContainer>
-          {quizRecord.map((record, i) => (
+          {quizRecord.length - answeredQuizRecord.length ? (
+            <Alert variant="outlined" severity="warning">
+              You skip {quizRecord.length - answeredQuizRecord.length} questions
+              in the test.
+            </Alert>
+          ) : null}
+          {answeredQuizRecord.map((record, i) => (
             <ResultTile
               correct={record.correct}
               animationDelay={`${100 + i * 50}ms`}
