@@ -4,8 +4,8 @@
 import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import styled             from "styled-components";
-import Footer             from "./Footer";
+import styled from "styled-components";
+import Footer from "./Footer";
 import { breakpointsRaw } from "../../frontend-config";
 
 import MobileMenu from "./MobileMenu";
@@ -80,7 +80,7 @@ const Layout = ({ children, toggleTheme, isDarkTheme }: LayoutProps) => {
   return (
     <div>
       <Head>
-        <title>Chingu Quiz App</title>
+        <title>TOEIC Thật Dễ Dàng</title>
       </Head>
 
       <Wrapper withShadow={headerShadow}>
@@ -88,7 +88,7 @@ const Layout = ({ children, toggleTheme, isDarkTheme }: LayoutProps) => {
           <Link href="/">
             <LogoWrapper>
               <Logo src="/logo.png" />
-              <LogoText>Chingu Quiz</LogoText>
+              <LogoText>TOEIC Thật Dễ Dàng</LogoText>
             </LogoWrapper>
           </Link>
 

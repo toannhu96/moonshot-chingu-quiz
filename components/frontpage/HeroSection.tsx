@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import styled, { css } from "styled-components";
-import { breakpoint }  from "../../frontend-config";
+import { breakpoint } from "../../frontend-config";
 
 const Wrapper = styled.div`
   background: ${props => props.theme.colors.backgroundPrimary};
@@ -59,8 +59,8 @@ const ButtonsWrapper = styled.div`
 `;
 
 const Button = styled.button<{
-  light?: boolean
-  dark?: boolean
+  light?: boolean;
+  dark?: boolean;
 }>`
   background: transparent;
   border: 1px solid ${props => props.theme.colors.greenPrimary};
@@ -94,10 +94,12 @@ const HeroSection = () => {
   return (
     <Wrapper>
       <ContentWrapper>
-        <Headline>{`<Chingu vs. Open Source />`}</Headline>
+        <Headline>{`TOEIC Thật Dễ Dàng`}</Headline>
 
         <Subtitle>
-          This is your place to get started studying in a fun way using Quizzes to sharpen your knowledge && || put it into practise by simply contributing to this project!
+          This is your place to get started studying in a fun way using Quizzes
+          to sharpen your knowledge && || put it into practise by simply
+          contributing to this project!
         </Subtitle>
 
         <ButtonsWrapper>

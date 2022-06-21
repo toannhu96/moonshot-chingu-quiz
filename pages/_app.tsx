@@ -45,7 +45,7 @@ const lightTheme = {
 };
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const toggleTheme = () => setIsDarkTheme(!isDarkTheme);
 
   return (
