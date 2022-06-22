@@ -93,18 +93,23 @@ export const QuestionStepDot = styled.button<{
   height: 30px;
   width: 30px;
   margin: 0px 4px 10px;
-  background-color: ${props => props.status == 'finish' ? "#047A55" : "#bbbbbb"};
-  border: none;
+  background-color: ${props =>
+    props.status == 'active' && props.theme.colors.midGreen ||
+    props.status == 'finish' && props.theme.colors.darkGreen ||
+    props.theme.colors.lightGrey
+  };
+  border: 0.5px solid black;
   border-radius: 50%;
+  box-shadow: 5px 5px 5px #aaaaaa;
   display: inline-block;
-  font-family: "Roboto", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 15px;
   font-weight: bold;
   text-align: center;
   opacity: ${props => 
     props.status == 'active' && 1 ||
     props.status == 'finish' && 0.8 ||
-    0.4
+    0.5
   };
   color: ${props => 
     props.status == 'active' && "white" ||
