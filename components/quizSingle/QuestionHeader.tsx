@@ -14,6 +14,7 @@ interface QuestionHeaderProps {
   questionData: ChinguQuiz.Question;
   questionIndex: number;
   questionCount: number;
+  quizRecord: Map<number, ChinguQuiz.QuizRecord>;
   animationDelay: number;
   getQuestionByIndex: Function;
 }
@@ -21,8 +22,9 @@ export default function QuestionHeader({
   questionData,
   questionIndex, // question index start from 1 not 0
   questionCount,
-  animationDelay,
+  quizRecord,
   getQuestionByIndex,
+  animationDelay,
 }: QuestionHeaderProps) {
   return (
     <QuestionHeaderContainer animationDelay={animationDelay}>
@@ -37,24 +39,25 @@ export default function QuestionHeader({
         />
       </QuestionProgressBar>
       <QuestionStepDotContainer>
-        {[...Array(questionCount).keys()].map(i => {
-          let status = "inactive";
-          if (i + 1 < questionIndex) {
-            status = "finish";
-          } else if (i + 1 == questionIndex) {
-            status = "active";
-          }
-          return (
-            <QuestionStepDot
-              status={status}
-              onClick={e =>
-                getQuestionByIndex(parseInt(e.target.innerHTML) - 1)
-              }
-            >
-              {i + 1}
-            </QuestionStepDot>
-          );
-        })}
+        {quizRecord != null &&
+          [...Array(questionCount).keys()].map(i => {
+            let status = "inactive";
+            if (i + 1 == questionIndex) {
+              status = "active";
+            } else if (quizRecord.has(i)) {
+              status = "finish";
+            }
+            return (
+              <QuestionStepDot
+                status={status}
+                onClick={e =>
+                  getQuestionByIndex(parseInt(e.target.innerHTML) - 1)
+                }
+              >
+                {i + 1}
+              </QuestionStepDot>
+            );
+          })}
       </QuestionStepDotContainer>
       <br />
       <Heading3>{questionData.prompt}</Heading3>

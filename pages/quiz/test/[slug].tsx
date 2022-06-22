@@ -119,8 +119,9 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
               questionData={quizQuestions[currentQuestionIndex]}
               questionIndex={currentQuestionIndex + 1}
               questionCount={quizQuestions.length}
-              animationDelay={30}
+              quizRecord={quizRecord}
               getQuestionByIndex={getQuestionByIndex}
+              animationDelay={30}
             />
 
             <AnswersTileSection>
