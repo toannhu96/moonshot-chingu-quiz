@@ -14,8 +14,8 @@ export async function createRolesTable() {
     await client.query(
       `
         CREATE TABLE roles (
-          "roleId" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-          "roleName" varchar (64) UNIQUE NOT NULL
+          "role_id" uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+          "role_name" varchar (64) UNIQUE NOT NULL
         )
       `
     );
@@ -38,8 +38,8 @@ export async function createUsersRolesTable() {
   await client.query(
     `
       CREATE TABLE users_roles (
-        "userId" uuid NOT NULL,
-        "roleId" uuid NOT NULL,
+        "user_id" varchar (64) NOT NULL,
+        "role_id" uuid NOT NULL,
         PRIMARY KEY ("userId", "roleId")
       )
     `
@@ -59,7 +59,7 @@ export async function insertNewRole(name: string) {
 
   return client.query(
     `
-      INSERT INTO roles ("roleId", "roleName")
+      INSERT INTO roles ("role_id", "role_name")
       VALUES (DEFAULT, $1)
     `,
     [name]

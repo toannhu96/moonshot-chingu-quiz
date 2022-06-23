@@ -14,14 +14,15 @@ export const checkEmailExists = async (email: string) => {
   return userRows.length === 1;
 };
 
-export const insertUser = async (username: string, email: string, avatar?: string) => {
+export const insertUser = async (id: string, username: string, email: string, avatar?: string) => {
   const client = await getConnection();
 
   const emailExists = await checkEmailExists(email);
 
   if (emailExists) return null;
 
-  return client.query("INSERT INTO users(username, email, avatar) VALUES ($1, $2, $3)", [
+  return client.query("INSERT INTO users(id, username, email, avatar) VALUES ($1, $2, $3, $4)", [
+    id,
     username,
     email,
     avatar,
@@ -76,7 +77,7 @@ export async function createUsersTable() {
   return client.query(
     `
     CREATE TABLE users (
-      id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
+      id varchar (64) PRIMARY KEY,
       username varchar (64) UNIQUE NOT NULL,
       email varchar (320) UNIQUE NOT NULL,
       avatar varchar (320) NULL,

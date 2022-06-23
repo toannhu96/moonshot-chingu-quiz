@@ -14,12 +14,13 @@ export default NextAuth({
     async signIn(user, account, profile) {
       const isAllowedToSignIn = true
       if (isAllowedToSignIn) {
+        const id = user.id as string;
         const username = profile.name as string;
         const email = user.email as string;
         const avatar = user.image as string;
         const emailExists = await checkEmailExists(email);
         if(!emailExists) {
-          await insertUser(username, email, avatar);
+          await insertUser(id, username, email, avatar);
         }
         return true
       } 
