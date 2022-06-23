@@ -49,6 +49,9 @@ export const addQuizResult = async (email: string, quizResult: QuizResult) => {
 
   const updatedData: UserData = data ? data : {};
   if (!updatedData.quizResults) updatedData.quizResults = [];
+  if (updatedData.quizResults.length >= 10) {
+    updatedData.quizResults.shift();
+  }
   const updatedQuizResults = [...updatedData.quizResults, quizResult];
 
   updatedData.quizResults = updatedQuizResults;
@@ -73,7 +76,7 @@ export async function createUsersTable() {
   return client.query(
     `
     CREATE TABLE users (
-      uid serial PRIMARY KEY,
+      id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
       username varchar (64) UNIQUE NOT NULL,
       email varchar (320) UNIQUE NOT NULL,
       avatar varchar (320) NULL,

@@ -65,6 +65,9 @@ const ProfilePage = ({ userData }: { userData: UserData | null }) => {
       <Wrapper style={{ background: "white" }}>
         <ContentWrapper style={{ color: "black" }}>
           <Headline>Quiz Results</Headline>
+          <span style={{ display: "flex", marginBottom: "50px" }}>
+            Your last 10 test records
+          </span>
 
           <QuizResultList>
             {userData?.quizResults?.map(result => {
