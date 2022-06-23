@@ -38,7 +38,7 @@ export async function createUsersRolesTable() {
   await client.query(
     `
       CREATE TABLE users_roles (
-        "userId" uuid NOT NULL,
+        "userId" varchar (64) NOT NULL,
         "roleId" uuid NOT NULL,
         PRIMARY KEY ("userId", "roleId")
       )
