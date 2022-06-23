@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   padding: 45px 25px 65px;
 
   @media (min-width: ${breakpoint("lg")}) {
-    padding: 115px 25px 190px;
+    padding: 115px 25px 150px;
   }
 `;
 
@@ -75,11 +75,21 @@ const Button = styled.button<{
     margin-right: 0;
   }
 
+  &:hover {
+    background: ${props => props.theme.colors.greenPrimary};
+    color: ${props => props.theme.colors.backgroundPrimary};
+  }
+
   ${props =>
     props.light &&
     css`
       background: ${props.theme.colors.greenPrimary};
       color: ${props.theme.colors.backgroundPrimary};
+
+      &:hover {
+        background: ${props.theme.colors.backgroundPrimary};
+        color: ${props.theme.colors.greenPrimary};
+      }
     `}
 
   ${props =>
@@ -87,6 +97,11 @@ const Button = styled.button<{
     css`
       background: ${props.theme.colors.backgroundPrimary};
       color: ${props.theme.colors.greenPrimary};
+
+      &:hover {
+        background: ${props.theme.colors.greenPrimary};
+        color: ${props.theme.colors.backgroundPrimary};
+      }
     `}
 `;
 

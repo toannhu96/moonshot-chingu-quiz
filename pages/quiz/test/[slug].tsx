@@ -2,7 +2,7 @@
   This page will load at the url "/quiz/:slug"
 */
 
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   AnswersTileSection,
   NextQuestionBtnContainer,
@@ -13,15 +13,17 @@ import {
 import Countdown from "~/components/timer/Countdown";
 import PageHeader from "~/components/shared/PageHeader";
 import QuestionHeader from "~/components/quizSingle/QuestionHeader";
-import { AnswerTileContainer } from "~/components/quizSingle/AnswerTileContainer";
 import NextQuestionBtn from "~/components/quizSingle/NextQuestionBtn";
 import PreviousQuestionBtn from "~/components/quizSingle/PreviousQuestionBtn";
 import SubmitQuizBtn from "~/components/quizSingle/SubmitQuizBtn";
 import ResultView from "~/components/quizSingle/ResultView";
-import db from "~/db";
 import { Question } from "~/models/ChinguQuiz/Question";
 import { QuizRecord } from "~/models/ChinguQuiz/QuizRecord";
 import { Answer } from "~/models/ChinguQuiz/Answer";
+import { AnswerTileContainer } from "~/components/quizSingle/AnswerTileContainer";
+import { QuizContext, QuizContextProvider } from "~/contexts/quiz-context";
+import { QuizResult } from "~/models/User/user";
+import db from "~/db";
 import shuffle from "shuffle-array";
 
 interface QuizProps {
@@ -29,15 +31,52 @@ interface QuizProps {
   quizQuestions: Question[];
 }
 
-export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
+const saveQuizResult = async (quizResult: QuizResult) => {
+  const response = await fetch("/api/quiz-result", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(quizResult),
+  });
+  const data = await response.json();
+  return data;
+};
+
+function Quiz({ quizTitle, quizQuestions: originalQuizQuestions }: QuizProps) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]); // TODO: allow selecting multiple answers
   const [quizRecord, setQuizRecord] = useState<Map<number, QuizRecord>>(
     new Map<number, QuizRecord>()
   );
   const [quizSubmitted, setQuizSubmitted] = useState(false);
+  const [quizQuestions, setQuizQuestions] = useState<Question[]>([]);
+  const { timer, setPaused } = useContext(QuizContext);
   const timeLimit = new Date();
   timeLimit.setSeconds(timeLimit.getSeconds() + 3600);
+
+  useEffect(() => {
+    const randomizedQuestions = [...originalQuizQuestions];
+    randomizedQuestions.forEach(question => {
+      const randomizedAnswers = [...question.answers];
+      shuffle(randomizedAnswers);
+      question.answers = randomizedAnswers;
+    });
+    shuffle(randomizedQuestions);
+    setQuizQuestions(randomizedQuestions);
+  }, []);
+
+  useEffect(() => {
+    if (quizSubmitted && quizQuestions.length === quizRecord.size) {
+      saveQuizResult({
+        date: new Date().toISOString(),
+        name: quizTitle,
+        numberCorrect: Array.from(quizRecord.values())
+          .filter(r => r != null)
+          .reduce((acc, curr) => acc + +curr.correct, 0),
+        totalQuestions: quizRecord.size,
+        secondsToComplete: timer,
+      });
+    }
+  }, [quizSubmitted, quizQuestions.length, quizRecord.size]);
 
   const toggleSelectedAnswer = (answerId: string, questionIndex: number) => {
     setSelectedAnswers([answerId]);
@@ -62,6 +101,7 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
     }
     setQuizRecord(quizRecord);
     setQuizSubmitted(true);
+    setPaused(true);
   };
 
   const getQuestionByIndex = (index: number) => {
@@ -184,7 +224,7 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
                   ) : (
                     <PreviousQuestionBtn disabled />
                   )}
-                  {selectedAnswers.length >= 1 ? (
+                  {currentQuestionIndex == quizQuestions.length - 1 ? (
                     <a
                       tabIndex={0}
                       role="link"
@@ -205,11 +245,22 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
   );
 }
 
-export async function getStaticPaths() {
-  interface Ids {
-    id: string;
-  }
+export default function QuizWithContext({
+  quizTitle,
+  quizQuestions,
+}: QuizProps) {
+  return (
+    <QuizContextProvider>
+      <Quiz quizQuestions={quizQuestions} quizTitle={quizTitle} />
+    </QuizContextProvider>
+  );
+}
 
+interface Ids {
+  id: string;
+}
+
+export async function getStaticPaths() {
   const { rows: ids } = await db.query("SELECT id FROM quiz");
   const paths = ids.map(({ id }: Ids) => ({
     params: {
@@ -241,16 +292,14 @@ export async function getStaticProps({
     [slug]
   );
 
-  const quizQuestions = shuffle(
-    questions.map((question: Question) => ({
-      id: question.id,
-      prompt: question.prompt,
-      answers: shuffle(
-        answers.filter((answer: Answer) => answer.question === question.id)
-      ),
-      explanation: question.explanation,
-    }))
-  );
+  const quizQuestions = questions.map((question: Question) => ({
+    id: question.id,
+    prompt: question.prompt,
+    answers: shuffle(
+      answers.filter((answer: Answer) => answer.question === question.id)
+    ),
+    explanation: question.explanation,
+  }));
 
   return {
     props: {

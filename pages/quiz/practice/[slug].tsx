@@ -86,7 +86,9 @@ export default function Quiz({ quizTitle, quizQuestions }: QuizProps) {
                 )
               )}
             </AnswersTileSection>
-            {selectedAnswers.length >= 1 && !quizSubmitted ? (
+            {selectedAnswers.length >= 1 &&
+            !quizSubmitted &&
+            quizQuestions[currentQuestionIndex].explanation ? (
               <Container maxWidth="md">
                 <Alert
                   severity="info"

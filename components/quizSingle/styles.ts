@@ -243,7 +243,7 @@ export const AnswerTileTextStyled = styled.div`
 
 export const NextQuestionBtnContainer = styled.div`
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
 `;
@@ -264,7 +264,7 @@ export const DisabledNextQuestionBtnStyled = styled(PrimaryButton)`
 
 export const SubmitQuizBtnContainer = styled.div`
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
 `;
@@ -354,21 +354,6 @@ export const TileNumber = styled.span`
   position: absolute;
   top: 8px;
   right: 15px;
-`;
-
-export const GraphSVG = styled.svg`
-  display: block;
-  margin: 10px auto;
-  max-width: 80%;
-  max-height: 250px;
-
-  @media (min-width: ${breakpoint("lg")}) {
-    transform: scale(1.1);
-    position: sticky;
-    top: 200px;
-    width: 30%;
-    margin-top: 78px;
-  }
 `;
 
 export const GraphPathBG = styled.path`

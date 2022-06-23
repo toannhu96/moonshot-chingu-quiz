@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 13.1 (Debian 13.1-1.pgdg100+1)
--- Dumped by pg_dump version 13.1 (Debian 13.1-1.pgdg100+1)
+-- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
+-- Dumped by pg_dump version 13.3 (Ubuntu 13.3-1.pgdg18.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -70,7 +70,8 @@ ALTER TABLE public.answer OWNER TO docker;
 CREATE TABLE public.question (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     quiz uuid NOT NULL,
-    prompt character varying(1000) NOT NULL
+    prompt character varying(1000) NOT NULL,
+    explanation text NULL
 );
 
 
@@ -114,6 +115,50 @@ CREATE TABLE public.tag (
 
 
 ALTER TABLE public.tag OWNER TO docker;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: docker
+--
+
+CREATE TABLE public.users (
+    uid integer NOT NULL,
+    username character varying(64) NOT NULL,
+    email character varying(320) NOT NULL,
+    avatar character varying(320) NOT NULL,
+    data json
+);
+
+
+ALTER TABLE public.users OWNER TO docker;
+
+--
+-- Name: users_uid_seq; Type: SEQUENCE; Schema: public; Owner: docker
+--
+
+CREATE SEQUENCE public.users_uid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_uid_seq OWNER TO docker;
+
+--
+-- Name: users_uid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: docker
+--
+
+ALTER SEQUENCE public.users_uid_seq OWNED BY public.users.uid;
+
+
+--
+-- Name: users uid; Type: DEFAULT; Schema: public; Owner: docker
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN uid SET DEFAULT nextval('public.users_uid_seq'::regclass);
+
 
 --
 -- Data for Name: answer; Type: TABLE DATA; Schema: public; Owner: docker
@@ -303,6 +348,21 @@ e4c6d87d-6add-4b3b-959b-8867ece5a928	javascript
 
 
 --
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: docker
+--
+
+COPY public.users (uid, username, email, avatar, data) FROM stdin;
+\.
+
+
+--
+-- Name: users_uid_seq; Type: SEQUENCE SET; Schema: public; Owner: docker
+--
+
+SELECT pg_catalog.setval('public.users_uid_seq', 25, true);
+
+
+--
 -- Name: answer answer_pk; Type: CONSTRAINT; Schema: public; Owner: docker
 --
 
@@ -340,6 +400,30 @@ ALTER TABLE ONLY public.subject
 
 ALTER TABLE ONLY public.tag
     ADD CONSTRAINT tags_pk PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: docker
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: docker
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: docker
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (uid);
 
 
 --
