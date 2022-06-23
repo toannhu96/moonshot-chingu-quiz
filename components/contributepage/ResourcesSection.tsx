@@ -1,13 +1,13 @@
 import React from "react";
 import styled, { css } from "styled-components";
-import { breakpoint }  from "../../frontend-config";
+import { breakpoint } from "../../frontend-config";
 
 const Wrapper = styled.div`
   background: ${props => props.theme.colors.backgroundPrimary};
   padding: 45px 25px 65px;
 
   @media (min-width: ${breakpoint("lg")}) {
-    padding: 115px 25px 190px;
+    padding: 115px 25px 150px;
   }
 `;
 
@@ -66,6 +66,11 @@ const Button = styled.button<{
     css`
       background: ${props.theme.colors.greenPrimary};
       color: ${props.theme.colors.backgroundPrimary};
+
+      &:hover {
+        background: ${props.theme.colors.backgroundPrimary};
+        color: ${props.theme.colors.greenPrimary};
+      }
     `}
 
   ${props =>
@@ -73,6 +78,11 @@ const Button = styled.button<{
     css`
       background: ${props.theme.colors.backgroundPrimary};
       color: ${props.theme.colors.greenPrimary};
+
+      &:hover {
+        background: ${props.theme.colors.greenPrimary};
+        color: ${props.theme.colors.backgroundPrimary};
+      }
     `}
 `;
 

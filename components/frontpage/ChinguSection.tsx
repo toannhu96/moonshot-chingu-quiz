@@ -1,9 +1,8 @@
 import React from "react";
 import Link from "next/link";
-import styled, { css }        from "styled-components";
-import { breakpoint }         from "../../frontend-config";
+import styled, { css } from "styled-components";
+import { breakpoint } from "../../frontend-config";
 import { Heading2, TextBody } from "../shared/styles";
-
 
 const Wrapper = styled.div`
   background: ${props => props.theme.colors.backgroundPrimary};
@@ -76,8 +75,8 @@ const ButtonsWrapper = styled.div`
 `;
 
 const Button = styled.button<{
-  light?: boolean
-  dark?: boolean
+  light?: boolean;
+  dark?: boolean;
 }>`
   background: transparent;
   border: 1px solid ${props => props.theme.colors.greenPrimary};
@@ -93,6 +92,11 @@ const Button = styled.button<{
     css`
       background: ${props.theme.colors.greenPrimary};
       color: ${props.theme.colors.backgroundPrimary};
+
+      &:hover {
+        background: ${props.theme.colors.backgroundPrimary};
+        color: ${props.theme.colors.greenPrimary};
+      }
     `}
 
   ${props =>
@@ -100,6 +104,11 @@ const Button = styled.button<{
     css`
       background: ${props.theme.colors.backgroundPrimary};
       color: ${props.theme.colors.greenPrimary};
+
+      &:hover {
+        background: ${props.theme.colors.greenPrimary};
+        color: ${props.theme.colors.backgroundPrimary};
+      }
     `}
 `;
 
@@ -113,13 +122,15 @@ const ChinguSection = () => {
         <ContentSection>
           <Heading2>What is Chingu?</Heading2>
           <TextBody>
-            We place motivated people with similar goals together in project teams which allows them level-up in ways they couldn't otherwise do. When you join Chingu, you will collaborate with others to build & launch real projects. We match learners from all skill levels, all timezones, and a variety of different tech stacks.
+            We place motivated people with similar goals together in project
+            teams which allows them level-up in ways they couldn't otherwise do.
+            When you join Chingu, you will collaborate with others to build &
+            launch real projects. We match learners from all skill levels, all
+            timezones, and a variety of different tech stacks.
           </TextBody>
 
           <ButtonsWrapper>
-          <a
-             target="_blank"
-             href="https://chingu.io/">
+            <a target="_blank" href="https://chingu.io/">
               <Button light>Take Me To Chingu.io</Button>
             </a>
           </ButtonsWrapper>

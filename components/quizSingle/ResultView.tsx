@@ -12,6 +12,9 @@ import {
 } from "./styles";
 import ScoreGraph from "./ScoreGraph";
 import Alert from "@mui/material/Alert";
+import { useContext } from "react";
+import { QuizContext } from "../../contexts/quiz-context";
+import humanizeDuration from "humanize-duration";
 
 export default function ResultView({
   quizTitle,
@@ -20,6 +23,7 @@ export default function ResultView({
   quizTitle: string;
   quizRecord: QuizRecord[];
 }) {
+  const { timer } = useContext(QuizContext);
   const answeredQuizRecord = quizRecord.filter(r => r != null);
   const percentage =
     Math.round(
@@ -30,7 +34,18 @@ export default function ResultView({
 
   return (
     <ResultPageContainer>
-      <ScoreGraph percentage={percentage} />
+      <div>
+        <p
+          style={{
+            textAlign: "center",
+            paddingTop: "30px",
+            fontWeight: "bold",
+          }}
+        >
+          Total Time: {humanizeDuration(timer * 1000)}
+        </p>
+        <ScoreGraph percentage={percentage} />
+      </div>
 
       <div>
         <ResultTitleContainer>

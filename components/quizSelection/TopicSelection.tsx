@@ -1,7 +1,7 @@
-import React                                           from "react";
-import TopicSelectionChoice                            from "./TopicSelectionChoice";
+import React from "react";
+import TopicSelectionChoice from "./TopicSelectionChoice";
 import { TopicSelectionContainer, TopicSelectionList } from "./styles";
-import type { ChinguQuiz, UI }                         from "../../models";
+import type { ChinguQuiz, UI } from "../../models";
 
 interface TopicSelectionProps {
   subjectsAndTopics: UI.Quizzes.SubjectAndTopic[];

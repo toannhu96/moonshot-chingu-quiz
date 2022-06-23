@@ -1,19 +1,20 @@
 version: "3.8"
 
 services:
-  client:
-    image: node:14
-    restart: always
-    user: root
-    working_dir: /home/node/app
-    volumes:
-      - ./:/home/node/app
-    ports:
-      - "3000:3000"
-    command: bash -c "npm i && npm run dev"
+  # client:
+  #   image: node:14
+  #   restart: always
+  #   user: root
+  #   working_dir: /home/node/app
+  #   volumes:
+  #     - ./:/home/node/app
+  #   ports:
+  #     - "3000:3000"
+  #   command: bash -c "npm i && npm run dev"
 
   db:
     image: postgres
+    container_name: moonshot-chingu-quiz_db
     restart: always
     environment:
       POSTGRES_PASSWORD: docker

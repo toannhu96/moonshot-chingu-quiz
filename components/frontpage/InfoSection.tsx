@@ -1,6 +1,6 @@
 import React from "react";
-import styled                                         from "styled-components";
-import { breakpoint }                                 from "../../frontend-config";
+import styled from "styled-components";
+import { breakpoint } from "../../frontend-config";
 import { PuzzleIcon, GrowSkillsIcon, OpenSourceIcon } from "../shared/icons";
 
 const Wrapper = styled.div`
@@ -74,7 +74,8 @@ const InfoSection = () => {
           </IconWrapper>
           <Headline>Have Fun</Headline>
           <Text>
-            We believe that studying should be fun and provide all the support needed in order to grow your skills.
+            We believe that studying should be fun and provide all the support
+            needed in order to grow your skills.
           </Text>
         </InfoBox>
 

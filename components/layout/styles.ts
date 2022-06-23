@@ -1,7 +1,7 @@
 import styled         from "styled-components";
 import { breakpoint } from "../../frontend-config";
 
-export const Wrapper = styled.div<{
+export const Wrapper = styled.header<{
   withShadow?: boolean;
 }>`
   height: 88px;
@@ -28,20 +28,33 @@ export const InnerWrapper = styled.div`
   margin: 0 auto;
 `;
 
+export const TopBarInnerWrapper = styled(InnerWrapper)`
+  color: ${props => props.theme.colors.textMenu};
+  justify-content: flex-start;
+  padding: 4px;
+  flex-direction: row-reverse;
+
+  & > div {
+    font-size: 0.8rem;
+    margin-left: 8px;
+  }
+`
+
 // LOGO //
 export const LogoWrapper = styled.a`
   display: flex;
   align-items: center;
+  text-decoration: none;
 `;
 
 export const Logo = styled.img`
-  width: 150px;
-  height: 150px;
+  width: 47px;
+  height: 47px;
   margin-right: 20px;
 
   @media (min-width: ${breakpoint("md")}) {
-    width: 100px;
-    height: 100px;
+    width: 58px;
+    height: 58px;
     margin-right: 18px;
   }
 `;
@@ -71,6 +84,7 @@ export const NavbarLink = styled.a`
   line-height: 24px;
   color: ${props => props.theme.colors.textMenu};
   margin-right: 32px;
+  text-decoration: none;
 
   &:last-of-type {
     margin-right: 0;
@@ -199,12 +213,16 @@ export const MobileToggleSwitch = styled(NavbarToggleSwitch)`
 `;
 
 // Footer //
-export const FooterWrapper = styled.div`
+export const FooterWrapper = styled.footer`
   width: 100%;
   background-color: ${props => props.theme.colors.backgroundPrimary};
   height: 66px;
   display: flex;
   align-items: center;
+
+  a {
+    text-decoration: none;
+  }
 `;
 
 export const ContentWrapper = styled.div`

@@ -43,10 +43,10 @@ export default function QuizTile({ quizData, animationDelay }: QuizTileProps) {
   return (
     <div>
       <TileContainer onClick={handleOpen} animationDelay={animationDelay}>
-        <div>
+        <header>
           <Heading4>{quizData.title}</Heading4>
           <TextBodySmall>{quizData.description}</TextBodySmall>
-        </div>
+        </header>
         <TileTagContainer>
           {quizData.tag.map(tag => (
             <QuizTileTag key={tag}>

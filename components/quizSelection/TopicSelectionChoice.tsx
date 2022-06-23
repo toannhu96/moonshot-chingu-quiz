@@ -1,6 +1,6 @@
-import React                            from "react";
+import React from "react";
 import { PrimaryButton, TextBodySmall } from "../shared/styles";
-import { TopicSelectionItem }           from "./styles";
+import { TopicSelectionItem } from "./styles";
 
 interface TopicSelectionChoiceProps {
   buttonSize?: "small" | "default";
