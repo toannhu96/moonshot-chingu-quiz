@@ -121,7 +121,7 @@ ALTER TABLE public.tag OWNER TO docker;
 --
 
 CREATE TABLE public.users (
-    uid integer NOT NULL,
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     username character varying(64) NOT NULL,
     email character varying(320) NOT NULL,
     avatar character varying(320) NOT NULL,
@@ -130,34 +130,6 @@ CREATE TABLE public.users (
 
 
 ALTER TABLE public.users OWNER TO docker;
-
---
--- Name: users_uid_seq; Type: SEQUENCE; Schema: public; Owner: docker
---
-
-CREATE SEQUENCE public.users_uid_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.users_uid_seq OWNER TO docker;
-
---
--- Name: users_uid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: docker
---
-
-ALTER SEQUENCE public.users_uid_seq OWNED BY public.users.uid;
-
-
---
--- Name: users uid; Type: DEFAULT; Schema: public; Owner: docker
---
-
-ALTER TABLE ONLY public.users ALTER COLUMN uid SET DEFAULT nextval('public.users_uid_seq'::regclass);
 
 
 --
@@ -351,15 +323,8 @@ e4c6d87d-6add-4b3b-959b-8867ece5a928	javascript
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: docker
 --
 
-COPY public.users (uid, username, email, avatar, data) FROM stdin;
+COPY public.users (id, username, email, avatar, data) FROM stdin;
 \.
-
-
---
--- Name: users_uid_seq; Type: SEQUENCE SET; Schema: public; Owner: docker
---
-
-SELECT pg_catalog.setval('public.users_uid_seq', 25, true);
 
 
 --
@@ -423,7 +388,7 @@ ALTER TABLE ONLY public.users
 --
 
 ALTER TABLE ONLY public.users
-    ADD CONSTRAINT users_pkey PRIMARY KEY (uid);
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
 
 
 --

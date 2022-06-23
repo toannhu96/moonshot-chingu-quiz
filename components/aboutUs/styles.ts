@@ -83,11 +83,11 @@ export const InfoBox = styled.div`
 `;
 
 export const Headline = styled(Heading2)<styleProps>`
-  margin-bottom: 60px;
+  margin-bottom: 20px;
   text-align: left;
   width: 623px;
   position: relative;
-  display: inline-block;
+  display: flex;
 
   ${props =>
     props.light &&
