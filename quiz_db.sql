@@ -121,7 +121,7 @@ ALTER TABLE public.tag OWNER TO docker;
 --
 
 CREATE TABLE public.users (
-    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    id character varying(64) NOT NULL,
     username character varying(64) NOT NULL,
     email character varying(320) NOT NULL,
     avatar character varying(320) NOT NULL,
